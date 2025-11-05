@@ -20,8 +20,7 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@Valid @RequestBody ItemDto itemDto,
-                          @RequestHeader(USER_ID_HEADER) Long ownerId) {
+    public ItemDto create(@Valid @RequestBody ItemDto itemDto, @RequestHeader(USER_ID_HEADER) Long ownerId) {
         return itemService.create(itemDto, ownerId);
     }
 
@@ -31,14 +30,12 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getAllByOwnerId(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public List<ItemDto> getAllByOwnerId(@RequestHeader(USER_ID_HEADER) Long ownerId) {
         return itemService.getAllByOwnerId(ownerId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@PathVariable Long itemId,
-                          @RequestBody ItemDto itemDto,
-                          @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ItemDto update(@PathVariable Long itemId, @RequestBody ItemDto itemDto, @RequestHeader(USER_ID_HEADER) Long ownerId) {
         return itemService.update(itemId, itemDto, ownerId);
     }
 
