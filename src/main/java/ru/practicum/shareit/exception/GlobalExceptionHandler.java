@@ -1,6 +1,7 @@
 package ru.practicum.shareit.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,5 +27,10 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleAll(Exception ex) {
         return Map.of("error", "Internal server error");
+    }
+
+    @ExceptionHandler(ItemAccessDeniedException.class)
+    public ResponseEntity<Object> handleItemAccessDenied(ItemAccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
     }
 }
