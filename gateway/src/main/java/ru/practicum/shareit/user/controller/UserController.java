@@ -1,45 +1,46 @@
 package ru.practicum.shareit.user.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.client.UserClient;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.service.UserService;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
-@RestController
-@RequestMapping("/users")
+@Controller
+@RequestMapping(path = "/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
+    private final UserClient userClient;
 
-    private final UserService userService;
+    private static final String USER_ID_PATH = "/{id}";
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody @Valid UserDto userDto) {
-        return userService.create(userDto);
+    public ResponseEntity<Object> create(@Valid @RequestBody UserDto userDto) {
+        return userClient.create(userDto);
     }
 
-    @GetMapping("/{userId}")
-    public UserDto getById(@PathVariable Long userId) {
-        return userService.getById(userId);
+    @GetMapping(USER_ID_PATH)
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
+        return userClient.getById(id);
     }
 
     @GetMapping
-    public List<UserDto> getAll() {
-        return userService.getAll();
+    public ResponseEntity<Object> getAll() {
+        return userClient.getAll();
     }
 
-    @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable Long userId, @RequestBody UserDto userDto) {
-        return userService.update(userId, userDto);
+    @PatchMapping(USER_ID_PATH)
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return userClient.update(id, userDto);
     }
 
-    @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long userId) {
-        userService.delete(userId);
+    @DeleteMapping(USER_ID_PATH)
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        return userClient.delete(id);
     }
 }
